@@ -26,4 +26,14 @@ class TaskController extends Controller
             'task' => $task
         ], 201);
     }
+
+
+    public function index()
+    {
+        $tasks = $this->taskService->getAllTasks();
+
+        return response()->json([
+            'tasks' => $tasks
+        ], 200);
+    }
 }

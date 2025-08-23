@@ -15,4 +15,10 @@ class TaskRepository implements TaskRepositoryInterface
 
         return TaskResource::make($task);
     }
+
+    public function all()
+    {
+        $tasks = Task::all();
+        return TaskResource::collection($tasks);
+    }
 }

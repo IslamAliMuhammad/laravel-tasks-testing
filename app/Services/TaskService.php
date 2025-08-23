@@ -18,4 +18,9 @@ class TaskService
     {
         return $this->taskRepo->create($data);
     }
+
+    public function getAllTasks()
+    {
+        return $this->taskRepo->all();
+    }
 }
