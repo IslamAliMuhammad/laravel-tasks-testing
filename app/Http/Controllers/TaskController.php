@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Task;
 
-use App\Http\Requests\TaskStoreRequest;
+use Illuminate\Http\Request;
 use App\Services\TaskService;
+use App\Http\Resources\TaskResource;
+use App\Http\Requests\TaskStoreRequest;
+use App\Http\Requests\TaskUpdateRequest;
 
 class TaskController extends Controller
 {
@@ -21,19 +24,26 @@ class TaskController extends Controller
     {
         $task = $this->taskService->createTask($request->validated());
 
-          return response()->json([
-            'message' => 'Task created successfully',
-            'task' => $task
-        ], 201);
+        return TaskResource::make($task);
     }
-
 
     public function index()
     {
-        $tasks = $this->taskService->getAllTasks();
+        $userId = auth()->id();
 
-        return response()->json([
-            'tasks' => $tasks
-        ], 200);
+        $tasks = $this->taskService->getAllTasks($userId);
+
+        return TaskResource::collection($tasks);
+    }
+
+    public function update(TaskUpdateRequest $request,Task $task)
+    {
+        if ($request->user()->cannot('update', $task)) {
+            abort(403);
+        }
+
+        $task = $this->taskService->updateTask($task->id, $request->validated());
+
+        return TaskResource::make($task);
     }
 }

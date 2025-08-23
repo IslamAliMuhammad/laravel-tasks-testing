@@ -14,6 +14,7 @@ use App\Http\Controllers\API\AuthController;
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tasks', [App\Http\Controllers\TaskController::class, 'index']);
     Route::post('/tasks', [App\Http\Controllers\TaskController::class, 'store']);
+    Route::put('/tasks/{task}', [App\Http\Controllers\TaskController::class, 'update']);
 });
 
 Route::post('/register', [AuthController::class, 'register']);

@@ -21,6 +21,22 @@ class TaskService
 
     public function getAllTasks()
     {
-        return $this->taskRepo->all();
+        return $this->taskRepo->getAllForUser();
+    }
+
+    public function updateTask($id, array $data)
+    {
+        $task = $this->taskRepo->find($id);
+
+        if ($task) {
+            $task->update($data);
+        }
+
+        return $task;
+    }
+
+    public function findTask($id)
+    {
+        return $this->taskRepo->find($id);
     }
 }

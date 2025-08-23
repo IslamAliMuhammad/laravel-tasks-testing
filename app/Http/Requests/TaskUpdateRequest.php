@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TaskStoreRequest extends FormRequest
+class TaskUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-    return true;
+        return true;
     }
 
     /**
@@ -22,8 +22,8 @@ class TaskStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-             'title' => 'required|string|max:255',
-            'description' => 'nullable|string'
+            'title' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|nullable|string'
         ];
     }
 }

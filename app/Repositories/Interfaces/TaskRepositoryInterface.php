@@ -6,5 +6,7 @@ interface TaskRepositoryInterface
 {
     public function create(array $data);
 
-    public function all();
+    public function getAllForUser($userId);
+
+    public function find($id);
 }
