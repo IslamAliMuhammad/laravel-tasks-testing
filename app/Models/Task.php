@@ -24,4 +24,8 @@ class Task extends Model
         return ucfirst($value);
     }
   
+    public function getIsCompletedAttribute()
+    {
+        return $this->status === 'done';
+    }
 }

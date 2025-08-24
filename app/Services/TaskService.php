@@ -19,9 +19,9 @@ class TaskService
         return $this->taskRepo->create($data);
     }
 
-    public function getAllTasks()
+    public function getAllTasks($userId)
     {
-        return $this->taskRepo->getAllForUser();
+        return $this->taskRepo->getAllForUser($userId);
     }
 
     public function updateTask($id, array $data)
@@ -39,4 +39,6 @@ class TaskService
     {
         return $this->taskRepo->find($id);
     }
+
+   
 }

@@ -15,7 +15,7 @@ class TaskStoreRequest extends FormRequest
     }
 
     /**
-     * Get the validation rules that apply to the request.
+     * Get the validation rules that apply to the request.~
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
@@ -23,7 +23,8 @@ class TaskStoreRequest extends FormRequest
     {
         return [
              'title' => 'required|string|max:255',
-            'description' => 'nullable|string'
+            'description' => 'nullable|string',
+            'status' => 'in:pending,in_progress,done',
         ];
     }
 }
