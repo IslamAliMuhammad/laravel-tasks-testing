@@ -11,6 +11,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class TaskControllerTest extends TestCase
 {
 
+    use RefreshDatabase;
+
     public function test_authenticated_user_can_create_task() {
         // arrange -> act -> assert
         $user = \App\Models\User::factory()->create();
