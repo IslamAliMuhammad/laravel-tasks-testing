@@ -16,9 +16,13 @@ class TaskRepository implements TaskRepositoryInterface
         return Task::create($data);
     }
 
-    public function getAllForUser($userId, $perPage = 15)
+    public function getAllForUser($userId, $perPage = 15, $status = null)
     {
-        return Task::where('user_id', $userId)->paginate($perPage);
+        return Task::where('user_id', $userId)
+                    ->when($status, function ($query, $status) {
+                        return $query->where('status', $status);
+                    })
+                    ->paginate($perPage);
     }
 
     public function find($id)

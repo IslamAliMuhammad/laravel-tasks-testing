@@ -15,7 +15,7 @@ class TaskController extends Controller
 
     protected $taskService;
 
-     public function __construct(TaskService $taskService)
+    public function __construct(TaskService $taskService)
     {
         $this->taskService = $taskService;
     }
@@ -30,13 +30,16 @@ class TaskController extends Controller
     public function index()
     {
         $userId = auth()->id();
+        $status = request()->get('status'); 
+        $perPage = request()->get('per_page', 15);
 
-        $tasks = $this->taskService->getAllTasks($userId, request()->get('per_page', 15));
+
+        $tasks = $this->taskService->getAllTasks($userId, $perPage, $status);
 
         return TaskResource::collection($tasks);
     }
 
-    public function update(TaskUpdateRequest $request,Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
         if ($request->user()->cannot('update', $task)) {
             abort(403);

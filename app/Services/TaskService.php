@@ -19,9 +19,9 @@ class TaskService
         return $this->taskRepo->create($data);
     }
 
-    public function getAllTasks($userId, $perPage = 15)
+    public function getAllTasks($userId, $perPage = 15, $status = null)
     {
-        return $this->taskRepo->getAllForUser($userId, $perPage);
+        return $this->taskRepo->getAllForUser($userId, $perPage, $status);
     }
 
     public function updateTask($id, array $data)
