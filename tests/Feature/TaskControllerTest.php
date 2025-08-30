@@ -2,9 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Task;
+use App\Models\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TaskControllerTest extends TestCase
 {
@@ -150,5 +152,52 @@ class TaskControllerTest extends TestCase
             'description' => 'Other description',
         ]);
     }
- 
+    
+    public function test_tasks_are_paginated() {
+        // arrange
+        $user = User::factory()->create();
+        Task::factory(30)->create(['user_id' => $user->id]);
+    
+        $this->actingAs($user);
+
+        // act
+        $response = $this->getJson('/api/tasks?per_page=15');
+
+        // assert
+        $response->assertStatus(200)
+                    ->assertJsonStructure([
+                        'data',
+                        'links',
+                        'meta'
+                    ]);
+
+        $this->assertCount(15, $response->json('data')); 
+    }
+
+    public function test_can_filter_completed_tasks() {
+
+        // arrange
+        $user = User::factory()->create();
+        Task::factory()->create(['user_id' => $user->id, 'status' => 'completed']);
+        Task::factory()->create(['user_id' => $user->id, 'status' => 'pending']);
+    
+        $this->actingAs($user);
+
+        // act
+        $response = $this->getJson('/api/tasks?status=completed');
+
+        // assert
+        $response->assertStatus(200)
+                    ->assertJsonStructure([
+                        'data',
+                        'links',
+                        'meta'
+                    ]);
+
+        $data = $response->json('data');
+
+        $this->assertCount(1, $data); 
+        
+        $this->assertEquals('completed', $data[0]['status']);
+    }
 }

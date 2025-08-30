@@ -31,7 +31,7 @@ class TaskController extends Controller
     {
         $userId = auth()->id();
 
-        $tasks = $this->taskService->getAllTasks($userId);
+        $tasks = $this->taskService->getAllTasks($userId, request()->get('per_page', 15));
 
         return TaskResource::collection($tasks);
     }
